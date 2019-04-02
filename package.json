@@ -1,0 +1,23 @@
+{
+  "name": "replacement-electron-app",
+  "productName": "Desktop/Laptop Replacement Util",
+  "description": "Desktop/Laptop Replacement Util",
+  "version": "0.1.5",
+  "main": "main.js",
+  "license": "MIT",
+  "author": "Balaji Ashok Kumar (BK)",
+  "devDependencies": {
+    "electron": "^3.0.5",
+    "electron-installer-dmg": "^2.0.0",
+    "electron-packager": "^12.2.0",
+    "electron-winstaller": "^2.7.0"
+  },
+  "scripts": {
+    "package-mac": "electron-packager . --overwrite --asar=true --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds --darwinDarkModeSupport=true",
+    "package-win": "electron-packager . replacement-electron-app --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Desktop/Laptop Replacement Util\"",
+    "package-linux": "electron-packager . replacement-electron-app --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds",
+    "create-installer-mac": "electron-installer-dmg ./release-builds/Electron\\ tutorial\\ app-darwin-x64/Electron\\ tutorial\\ app.app replacement-electron-app --out=release-builds --overwrite --icon=assets/icons/mac/icon.icns",
+    "create-installer-win": "node installers/windows/createinstaller.js",
+    "create-debian-installer": "electron-installer-debian --src release-builds/replacement-electron-app-linux-x64/ --arch amd64 --config debian.json"
+  }
+}
