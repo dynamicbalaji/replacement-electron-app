@@ -61,7 +61,7 @@ var os=require('os');
         console.log("connected successfuly");
       });
       // Queries
-      $query = 'SELECT req_id FROM `AHD` WHERE `req_TYPE`="Laptop Replacement" and `status` ="open" and `req_user_id` ="balaji"';
+     $query = 'SELECT req_id FROM `AHD` WHERE `req_TYPE`="Laptop Replacement" and `req_user_id` ="balaji"';
 
     connection.query($query, function(err, rows, fields) {
     if(err){
