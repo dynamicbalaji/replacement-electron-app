@@ -11,8 +11,8 @@ function(n) {
       },
 
       welcome: function() {
-        $('#welcome .inner p').text(i18n.__('Hopefully this helps someone to get up to speed with electron.'));
-        $('#learn-more-button').text(i18n.__('Learn more'));
+        //$('#welcome .inner p').text(i18n.__('Hopefully this helps someone to get up to speed with electron.'));
+        //$('#learn-more-button').text(i18n.__('Learn more'));
       },
 
       init: function() {

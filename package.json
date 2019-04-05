@@ -19,5 +19,19 @@
     "create-installer-mac": "electron-installer-dmg ./release-builds/Electron\\ tutorial\\ app-darwin-x64/Electron\\ tutorial\\ app.app replacement-electron-app --out=release-builds --overwrite --icon=assets/icons/mac/icon.icns",
     "create-installer-win": "node installers/windows/createinstaller.js",
     "create-debian-installer": "electron-installer-debian --src release-builds/replacement-electron-app-linux-x64/ --arch amd64 --config debian.json"
+  },
+  "dependencies": {
+    "download": "^7.1.0",
+    "download-file": "^0.1.5",
+    "events": "^3.0.0",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "is-admin": "^2.1.1",
+    "mysql": "^2.16.0",
+    "node-run-cmd": "^1.0.1",
+    "path": "^0.12.7",
+    "photonkit": "^0.1.2",
+    "url": "^0.11.0",
+    "username": "^4.1.0"
   }
 }

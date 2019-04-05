@@ -1,11 +1,195 @@
-<template class="section-template">
-<section id="welcome" class="wrapper style1 fullscreen intro">
-  <div class="inner">
-    <h1>Desktop/Laptop Replacement Util</h1>
-    <p>Hopefully this helps someone to get up to speed with electron.</p>
-    <ul class="actions">
-      <li><a href="#one" id="learn-more-button" class="button scrolly">Learn more</a></li>
-    </ul>
-  </div>
-</section>
-</template>
+<head>
+    <style>
+        .ring-1 {
+      width: 10px;
+      height: 10px;
+      margin: 0 auto;
+      padding: 10px;
+      border: 7px dashed #4b9cdb;
+      border-radius: 100%;
+  }
+      
+      .load-4 .ring-1 {animation: loadingD 1.5s .3s cubic-bezier(.17,.37,.43,.67) infinite;}
+      @keyframes loadingD {
+      0% {transform: rotate(0deg);}
+      50% {transform: rotate(180deg);}
+      100% {transform: rotate(360deg);}
+  }
+  
+      </style>
+   
+  </head>
+  <body>
+      <script>
+          const { ipcMain, dialog, app } = require('electron');
+          var exec = require('child_process').execFile;
+          var nrc = require('node-run-cmd');
+          var mysql = require('mysql');
+          var con = mysql.createConnection({
+        host: "remotemysql.com",
+        user: "p7Uck7iBo0",
+        password: "WbjMAoBPE2"
+      });
+      var os=require('os');
+      var username=require('username');
+      setTimeout(function(){
+        document.getElementById('HostName').innerHTML=os.hostname();
+        document.getElementById('UserName').innerHTML=username.sync();
+      },2000);
+      function callSetupOneDrive(){
+        setprogress(1);
+        document.getElementById('welcome').style.display='none';
+        document.getElementById('oneDrive').style.display='block';
+        var download = require('download-file')
+     
+    var url = "https://oneclient.sfx.ms/Win/Prod/19.033.0218.0011/OneDriveSetup.exe"
+     
+    var options = {
+        directory: "C:\\Users\\SREEVASTHAVA\\Downloads",
+        filename: "onedrive.exe"
+    }
+    document.getElementById('loader').style.display='none';
+                  document.getElementById('next').style.display='block';
+     
+    /*download(url, options, function(err){
+    //if(err) throw err
+    document.getElementById('loader').style.display='none';
+                  document.getElementById('next').style.display='block';
+                 /* var child = require('child_process').execFile;
+    var executablePath = "C:\\Users\\SREEVASTHAVA\\Downloads\\onedrive.exe";
+    
+    child(executablePath, function(err, data) {
+        if(err){
+           console.error(err);
+           return;
+        }
+     
+        console.log(data.toString());
+    });
+    }) */
+    
+      }
+          
+        
+          
+              function fetchSoftwares(){
+                setprogress(2);
+                //var loop1=false;
+                document.getElementById('oneDrive').style.display='none';
+                document.getElementById('SoftWareList').style.display='block';
+                var table = document.createElement('table');
+                table.setAttribute('id','softwares');
+              var tr = document.createElement('tr');   
+              var th1=document.createElement('th');
+              var th2=document.createElement('th');
+              th1.appendChild(document.createTextNode('NAME'));
+              th2.appendChild(document.createTextNode(''));
+              tr.appendChild(th1);
+              tr.appendChild(th2);
+              table.appendChild(tr);
+                var callback = function (data) {
+                  if(data.indexOf("Applications:")!=-1){
+                    loop1=true;
+                var arrayData=data.split("Applications:")[1].split(/\n/);
+                
+      for (var i = 0; i < arrayData.length; i++){
+        if(arrayData[i]!=undefined && arrayData[i].trim()!=""){
+          var tr = document.createElement('tr'); 
+          var td1 = document.createElement('td');
+          var td2 = document.createElement('td');
+          var text1 = document.createTextNode(arrayData[i]);
+          
+          td2.innerHTML='<input type="checkbox" id="sw'+i+'"  ><label for="sw'+i+' ">&nbsp;</label>';
+          if(text1!=undefined ){
+          td1.appendChild(text1);
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          table.appendChild(tr);
+          }
+        }
+          document.getElementById('list').style.display='table';
+          document.getElementById('list').appendChild(table);
+      }
+                document.getElementById('fetching').style.display='none';
+                document.getElementById('next').style.display='block';
+                  }
+              };
+              // nrc.run('wmic product get name,version /format:csv', { onData: callback } );
+              var commands = [
+      'psinfo -s'
+    ];
+    var options = { cwd: 'C:/Users/SREEVASTHAVA/Downloads/pstools' , onData: callback };
+    nrc.run(commands, options);
+              }
+      
+              function saveSoftwares(){
+                var table=document.getElementById("softwares");
+                var arrylist;
+               for(var i=2;i<table.rows.length;i++)
+               {
+                 if(document.getElementById('sw'+i).checked){
+                  arrylist.push(table.rows[i].cells[0]+"-"+table.rows[i].cells[0]);
+                 }
+               }
+              }
+        </script>
+  <template class="section-template">
+  <section id="welcome" class="wrapper style1 fullscreen intro">
+    <div class="inner">
+      <h1>Desktop/Laptop Replacement Util</h1>
+      <p id="HostName"></p>
+      <p id="UserName"></p>
+      <ul class="actions">
+        <li><a href="#one" id="learn-more-button" class="button scrolly" onclick="callSetupOneDrive()">Start</a></li>
+      </ul>
+    </div>
+  </section>
+  <section id="oneDrive" class="wrapper style1 fullscreen intro">
+      <div class="inner">
+        <h1>Setting Up One Drive</h1>
+        <div class="load-wrapp" id="loader">
+            <div class="load-4">
+                <div class="ring-1"></div>
+                <div class="progress"></div>
+            </div>
+        </div>
+        <ul class="actions">
+          <li><a href="#one" id="next" class="button scrolly" style="display: none" onclick="fetchSoftwares()">Next</a></li>
+        </ul>
+      </div>
+    </section>
+    <section id="SoftWareList" class="wrapper style1 fullscreen intro">
+        <div class="inner" id="fetching" >
+          <h1>Fetching Software list</h1>
+          <div class="load-wrapp" id="loader">
+              <div class="load-4">
+                  <div class="ring-1"></div>
+                  <div class="progress"></div>
+              </div>
+          </div>
+          
+        </div>
+        <div class="inner" id="list" style="max-height:300px;overflow-y:scroll;display:none"><h1>Select softwares to reinstall</h1></div>
+          <ul class="actions" style="margin:25px">
+            <li><a href="#one" id="next" class="button scrolly" style="display: none" onclick="saveSoftwares()">Next</a></li>
+          </ul>
+      </section>
+  
+      <section id="Exceptions" class="wrapper style1 fullscreen intro">
+          <div class="inner" id="exceptions" >
+            <h1>Fetching Exceptional Access</h1>
+            <div class="load-wrapp" id="loader">
+                <div class="load-4">
+                    <div class="ring-1"></div>
+                    <div class="progress"></div>
+                </div>
+            </div>
+            
+          </div>
+          <div class="inner" id=list style="max-height:300px;overflow-y:scroll;display:none"></div>
+            <ul class="actions">
+              <li><a href="#one" id="next" class="button scrolly" s>Next</a></li>
+            </ul>
+        </section>
+  </template>
+  </body>

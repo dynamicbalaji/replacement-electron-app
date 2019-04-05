@@ -13,22 +13,53 @@
     <link rel="import" href="sections/getintouch.html">
     <link rel="import" href="sections/welcome.html">
     <link rel="import" href="sections/dialog.html">
-    <link rel="import" href="sections/ipcremote.html">
+	<link rel="import" href="sections/ipcremote.html">
+	<script>
+	function setprogress(i){
+		
+$('.progress .circle').removeClass().addClass('circle');
+$('.progress .bar').removeClass().addClass('bar');
+  $('.progress .circle:nth-of-type(' + i + ')').addClass('active');
+  
+  $('.progress .circle:nth-of-type(' + (i-1) + ')').removeClass('active').addClass('done');
+  
+  $('.progress .circle:nth-of-type(' + (i-1) + ') .label').html('&#10003;');
+  
+  $('.progress .bar:nth-of-type(' + (i-1) + ')').addClass('active');
+  
+  $('.progress .bar:nth-of-type(' + (i-2) + ')').removeClass('active').addClass('done');
+  
+  i++;
+  
+  if (i==0) {
+    $('.progress .bar').removeClass().addClass('bar');
+    $('.progress div.circle').removeClass().addClass('circle');
+    i = 1;
+  }
+};
+	
+	</script>
 	</head>
 	<body>
 
-		<!-- Sidebar -->
-			<section id="sidebar">
-				<div class="inner">
-					<nav>
-						<ul>
-							<li><a id="welcome-menu" data-section="welcome" href="#">Welcome</a></li>
-							<li><a id="whoweare-menu" data-section="ipcremote" href="#">IPC/Remote</a></li>
-							<li><a id="dialog-menu" data-section="dialog" href="#">Dialog</a></li>
-							<li><a id="getintouch-menu" data-section="getintouch" href="#">Get in touch</a></li>
-						</ul>
-					</nav>
-				</div>
+		<section id="screenflow">
+				
+<div class="progress">
+  <div class="circle">
+    <span class="label">1</span>
+    <span class="title">OneDrive</span>
+  </div>
+  <span class="bar"></span>
+  <div class="circle">
+    <span class="label">2</span>
+    <span class="title">Softwares</span>
+  </div>
+  <span class="bar"></span>
+  <div class="circle">
+    <span class="label">3</span>
+    <span class="title">Exceptions</span>
+  </div>
+</div>
 			</section>
 
 		<!-- Wrapper -->
