@@ -37,12 +37,24 @@ $('.progress .bar').removeClass().addClass('bar');
     i = 1;
   }
 };
+var os=require('os');
+      var username=require('username');
+      setTimeout(function(){
+        document.getElementById('HostName').innerHTML=os.hostname();
+        document.getElementById('UserName').innerHTML=username.sync();
+      },1000);
 	
 	</script>
 	</head>
 	<body>
 
 		<section id="screenflow">
+				<div style="background-color:#312450">
+						<div><span style="margin-bottom:0px;font-weight: bold"> Request ID:</span><span style="padding-right: 30vw">1E2478</span>
+						<span style="margin-bottom:0px;font-weight: bold"> UserName:</span><span id="HostName" style="margin-bottom:0px;padding-right: 30vw"></span>
+						<span style="margin-bottom:0px;font-weight: bold"> Computer Name:</span> <span id="UserName" style="margin-bottom:0px"></span>
+					</div>
+				</div>
 				
 <div class="progress">
   <div class="circle">
