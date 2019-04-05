@@ -45,7 +45,40 @@ var os=require('os');
       setTimeout(function(){
         document.getElementById('HostName').innerHTML=os.hostname();
         document.getElementById('UserName').innerHTML=username.sync();
-      },1000);
+			},1000);
+			
+			var mysql = require('mySql');
+      var connection = mysql.createConnection({
+        host: "remotemysql.com",
+        user: "p7Uck7iBo0",
+        database: "p7Uck7iBo0",
+        password: "WbjMAoBPE2"
+      });
+      connection.connect((err)=>{
+        if(err){
+          return console.log("err.stack")
+        }
+        console.log("connected successfuly");
+      });
+      // Queries
+      $query = 'SELECT req_id FROM `AHD` WHERE `req_TYPE`="Laptop Replacement" and `status` ="open" and `req_user_id` ="balaji"';
+
+    connection.query($query, function(err, rows, fields) {
+    if(err){
+        console.log("An error ocurred performing the query.");
+        console.log(err);
+        return;
+    }
+
+    console.log("Query succesfully executed", rows[0].req_id);
+		document.getElementById('reqId').innerHTML=rows[0].req_id;
+});
+
+// Close the connection
+connection.end(function(){
+    // The connection has been closed
+    console.log("connection has been closed");
+});
 	
 	</script>
 	</head>
@@ -53,9 +86,9 @@ var os=require('os');
 
 		<section id="screenflow">
 				<div style="background-color:#312450">
-						<div><span style="margin-bottom:0px;font-weight: bold"> Request ID:</span><span style="padding-right: 30vw">1E2478</span>
-						<span style="margin-bottom:0px;font-weight: bold"> UserName:</span><span id="HostName" style="margin-bottom:0px;padding-right: 30vw"></span>
-						<span style="margin-bottom:0px;font-weight: bold"> Computer Name:</span> <span id="UserName" style="margin-bottom:0px"></span>
+						<div><span style="margin-bottom:0px;font-weight: bold"> Request ID:</span><span style="padding-right: 30vw" id="reqId"></span>
+						<span style="margin-bottom:0px;font-weight: bold"> Computer Name:</span><span id="HostName" style="margin-bottom:0px;padding-right: 30vw"></span>
+						<span style="margin-bottom:0px;font-weight: bold"> User Name:</span> <span id="UserName" style="margin-bottom:0px"></span>
 					</div>
 				</div>
 				
