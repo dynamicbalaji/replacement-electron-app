@@ -115,6 +115,7 @@
           var isAdmin=false;
           var usbexep=false;
           var termexcep=false;
+          var laptopStatus = '';	
           var con = mysql.createConnection({
         host: "remotemysql.com",
         user: "p7Uck7iBo0",
@@ -220,6 +221,7 @@
                   selectedsoftwares.push(table.rows[i].cells[0].innerText);
                  }
                }
+               getStatus();
               }
               function fetchExceptions(){
                 setprogress(3);
@@ -291,7 +293,124 @@
               else{
                 document.getElementById('card__num_usb_no').style.display="block";
               }
+              if(laptopStatus === 'Open'){
+               saveExceptionalAccess(isAdmin,usbexep);
               }
+
+              }
+    function saveExceptionalAccess(isAdmin,usbexep) {
+
+      console.log("admin"+isAdmin);
+      console.log("usb"+usbexep)
+      var mysql = require('mySql');			
+          var connection = mysql.createConnection({
+            host: "remotemysql.com",
+            user: "p7Uck7iBo0",
+            database: "p7Uck7iBo0",
+            password: "WbjMAoBPE2"
+          });
+          connection.connect((err)=>{
+            if(err){
+              return console.log("err.stack")
+            }
+            console.log("connected successfuly");
+          });
+          // Queries
+          if(isAdmin && usbexep) {
+            $query = 'INSERT INTO `REPLACEMENT_CONFIGS` VALUES("balaji","Y","Y","Y","balaji","2019-04-06 03:00:00")';
+          }
+          else if(isAdmin) {
+            $query = 'INSERT INTO `REPLACEMENT_CONFIGS` VALUES("balaji","Y","N","Y","balaji","2019-04-06 03:00:00")';
+          }
+          else if(usbexep) {
+            $query = 'INSERT INTO `REPLACEMENT_CONFIGS` VALUES("balaji","N","Y","Y","balaji","2019-04-06 03:00:00")';
+          }
+        
+        connection.query($query, function(err, rows, fields) {
+        if(err){
+            console.log("An error ocurred performing the query.");
+            console.log(err);
+            return;
+        }
+      });
+
+      // Close the connection
+      connection.end(function(){
+        // The connection has been closed
+        console.log("connection has been closed");
+      });
+}
+function getStatus() {
+    var mysql = require('mySql');	
+    var connection = mysql.createConnection({
+      host: "remotemysql.com",
+      user: "p7Uck7iBo0",
+      database: "p7Uck7iBo0",
+      password: "WbjMAoBPE2"
+    });
+    connection.connect((err)=>{
+      if(err){
+        return console.log("err.stack")
+      }
+      console.log("connected successfuly");
+    });
+    // Queries
+    $query = 'SELECT status FROM `AHD` WHERE `req_TYPE`="Laptop Replacement" and `req_user_id` ="balaji"';
+
+  connection.query($query, function(err, rows, fields) {
+  if(err){
+      console.log("An error ocurred performing the query.");
+      console.log(err);
+      return;
+  }
+  laptopStatus = rows[0].status;
+  console.log("status:", laptopStatus);   
+});
+
+// Close the connection
+connection.end(function(){
+  // The connection has been closed
+  console.log("connection has been closed");
+});
+  if(laptopStatus === 'Open'){
+  saveSelectedSoftware();
+  }
+}
+function saveSelectedSoftware() {
+
+var mysql = require('mySql');			
+    var connection = mysql.createConnection({
+      host: "remotemysql.com",
+      user: "p7Uck7iBo0",
+      database: "p7Uck7iBo0",
+      password: "WbjMAoBPE2"
+    });
+    connection.connect((err)=>{
+      if(err){
+        return console.log("err.stack")
+      }
+      console.log("connected successfuly");
+    });
+    // Queries
+    $query = 'INSERT INTO `REPLACEMENT_SOFTWARE` VALUES("balaji","Outlook")';
+
+  connection.query($query, function(err, rows, fields) {
+  if(err){
+      console.log("An error ocurred performing the query.");
+      console.log(err);
+      return;
+  }
+ 
+  console.log("insert status:", rows);   
+});
+
+// Close the connection
+connection.end(function(){
+  // The connection has been closed
+  console.log("connection has been closed");
+});
+
+}
         </script>
   <template class="section-template">
       <section id="welcome" class="wrapper style1 fullscreen intro">     
