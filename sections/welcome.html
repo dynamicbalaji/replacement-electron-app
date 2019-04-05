@@ -15,6 +15,92 @@
       50% {transform: rotate(180deg);}
       100% {transform: rotate(360deg);}
   }
+
+ label {
+	 display: inline-block;
+	 color: #fff;
+	 cursor: pointer;
+	 position: relative;
+}
+ label span {
+	 display: inline-block;
+	 position: relative;
+	 background-color: transparent;
+	 width: 25px;
+	 height: 25px;
+	 transform-origin: center;
+	 border: 2px solid #fff;
+	 border-radius: 50%;
+	 vertical-align: -6px;
+	 margin-right: 10px;
+	 transition: background-color 150ms 200ms, transform 350ms cubic-bezier(0.78, -1.22, 0.17, 1.89);
+}
+ label span:before {
+	 content: "";
+	 width: 0px;
+	 height: 2px;
+	 border-radius: 2px;
+	 background: #fff;
+	 position: absolute;
+	 transform: rotate(45deg);
+	 top: 13px;
+	 left: 9px;
+	 transition: width 50ms ease 50ms;
+	 transform-origin: 0% 0%;
+}
+ label span:after {
+	 content: "";
+	 width: 0;
+	 height: 2px;
+	 border-radius: 2px;
+	 background: #fff;
+	 position: absolute;
+	 transform: rotate(305deg);
+	 top: 16px;
+	 left: 10px;
+	 transition: width 50ms ease;
+	 transform-origin: 0% 0%;
+}
+ label:hover span:before {
+	 width: 5px;
+	 transition: width 100ms ease;
+}
+ label:hover span:after {
+	 width: 10px;
+	 transition: width 150ms ease 100ms;
+}
+ input[type="checkbox"] {
+	 display: none;
+}
+ input[type="checkbox"]:checked + label span {
+	 background-color: #fff;
+	 transform: scale(1.25);
+}
+ input[type="checkbox"]:checked + label span:after {
+	 width: 10px;
+	 background: #1790b5;
+	 transition: width 150ms ease 100ms;
+}
+ input[type="checkbox"]:checked + label span:before {
+	 width: 5px;
+	 background: #1790b5;
+	 transition: width 150ms ease 100ms;
+}
+ input[type="checkbox"]:checked + label:hover span {
+	 background-color: #fff;
+	 transform: scale(1.25);
+}
+ input[type="checkbox"]:checked + label:hover span:after {
+	 width: 10px;
+	 background: #1790b5;
+	 transition: width 150ms ease 100ms;
+}
+ input[type="checkbox"]:checked + label:hover span:before {
+	 width: 5px;
+	 background: #1790b5;
+	 transition: width 150ms ease 100ms;
+}
+ 
   
       </style>
    
@@ -90,7 +176,7 @@
                 var callback = function (data) {
                   if(data.indexOf("Applications:")!=-1){
                     loop1=true;
-                var arrayData=data.split("Applications:")[1].split(/\n/);
+                var arrayData=data.split("Applications:")[1].split(/\n/).sort();
                 
       for (var i = 0; i < arrayData.length; i++){
         if(arrayData[i]!=undefined && arrayData[i].trim()!=""){
@@ -99,7 +185,7 @@
           var td2 = document.createElement('td');
           var text1 = document.createTextNode(arrayData[i]);
           
-          td2.innerHTML='<input type="checkbox" id="sw'+i+'"  ><label for="sw'+i+' ">&nbsp;</label>';
+          td2.innerHTML='<input type="checkbox" id="sw'+i+'" name="check"  ><label for="sw'+i+'"><span></span></label>';
           if(text1!=undefined ){
           td1.appendChild(text1);
           tr.appendChild(td1);
@@ -111,7 +197,7 @@
           document.getElementById('list').appendChild(table);
       }
                 document.getElementById('fetching').style.display='none';
-                document.getElementById('next').style.display='block';
+                document.getElementById('next2').style.display='block';
                   }
               };
               // nrc.run('wmic product get name,version /format:csv', { onData: callback } );
@@ -124,7 +210,7 @@
       
               function saveSoftwares(){
                 var table=document.getElementById("softwares");
-                var arrylist;
+                var arrylist=[];
                for(var i=2;i<table.rows.length;i++)
                {
                  if(document.getElementById('sw'+i).checked){
@@ -132,18 +218,59 @@
                  }
                }
               }
+              function fetchExceptions(){
+                setprogress(3);
+                document.getElementById('SoftWareList').style.display='none';
+                document.getElementById('Exceptions').style.display="block";
+                var adminfetch = function (data) {
+                  var username=require('username');
+                  var user=username.sync();
+                  var arr=data.split(/\n/);
+                  for(var i=0;i<arr.length;i++){
+                    if(arr[i].indexOf(user)){
+                      document.getElementsByClassName("card__num_admin_yes")[0].style.display="block";
+                      break;
+                    }
+                    else{
+                      document.getElementsByClassName("card__num_admin_no")[0].style.display="block";
+                    }
+                  }
+                  }
+                nrc.run('net localgroup Administrators', { onData: adminfetch } );
+                var Registry = require('winreg')
+                   ,   regKey = new Registry({                                       // new operator is optional
+                   hive: Registry.HKLM,                                        // open registry hive HKEY_CURRENT_USER
+                  key:  '\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR' // key containing autostart programs
+                         })
+ 
+          regKey.values(function (err, items /* array of RegistryItem */) {
+            if (err)
+             console.log('ERROR: '+err);
+                    else
+      for (var i=0; i<items.length; i++){
+        if(items[i].name === 'Start') {
+          if(items[i].value='0x3'){
+            document.getElementsByClassName("card__num_usb_yes")[0].style.display="block";
+          }
+          else{
+            document.getElementsByClassName("card__num_usb_no")[0].style.display="block";
+          }
+        }
+      }
+  });
+              }
         </script>
-  <template class="section-template">    
-  <section id="welcome" class="wrapper style1 fullscreen intro">     
-    <div class="inner" style="margin-left:24vw;padding-top:10vw">
-      <h1>Desktop/Laptop Replacement Util</h1>     
-      <ul class="actions">
-        <li><a href="#one" id="learn-more-button" class="button scrolly" onclick="callSetupOneDrive()" style="background-color:#037575">Start</a></li>
-      </ul>
-    </div> 
-  </section>
+  <template class="section-template">
+      <section id="welcome" class="wrapper style1 fullscreen intro">     
+          <div class="inner" style="margin-left:20px;padding-top:200px">
+            <h1>Desktop/Laptop Replacement Util</h1>     
+            <ul class="actions">
+              <li><a href="#one" id="learn-more-button" class="button scrolly" onclick="callSetupOneDrive()" style="background-color:#037575">Start</a></li>
+            </ul>
+          </div> 
+        </section>
   <section id="oneDrive" class="wrapper style1 fullscreen intro">
-      <div class="inner">
+      <div class="inner" style="padding-top:200px">
         <h1>Setting Up One Drive</h1>
         <div class="load-wrapp" id="loader">
             <div class="load-4">
@@ -157,7 +284,7 @@
       </div>
     </section>
     <section id="SoftWareList" class="wrapper style1 fullscreen intro">
-        <div class="inner" id="fetching" >
+        <div class="inner" id="fetching" style="padding-top:200px"  >
           <h1>Fetching Software list</h1>
           <div class="load-wrapp" id="loader">
               <div class="load-4">
@@ -167,21 +294,45 @@
           </div>
           
         </div>
-        <div class="inner" id="list" style="max-height:300px;overflow-y:scroll;display:none"><h1>Select softwares to reinstall</h1></div>
+        <div class="inner" id="list" style="max-height:300px;overflow-y:scroll;display:none;"><h1>Select softwares to reinstall</h1></div>
           <ul class="actions" style="margin:25px">
-            <li><a href="#one" id="next" class="button scrolly" style="display: none" onclick="saveSoftwares()">Next</a></li>
+            <li><a href="#one" id="next2" class="button scrolly" style="display: none" onclick="saveSoftwares(); fetchExceptions()">Next</a></li>
           </ul>
       </section>
   
       <section id="Exceptions" class="wrapper style1 fullscreen intro">
           <div class="inner" id="exceptions" >
-            <h1>Fetching Exceptional Access</h1>
-            <div class="load-wrapp" id="loader">
-                <div class="load-4">
-                    <div class="ring-1"></div>
-                    <div class="progress"></div>
-                </div>
-            </div>
+            <h1>Exceptional Access</h1>     
+<ul>
+    <li class="card">
+      <div class="card__flipper">
+        <div class="card__front">
+          <p class="card__name"><span>Administrator</span><br>Access</p>
+          <p class="card__num_admin_yes" style="display: none" ><i class="material-icons" style="color: green;font-size: 100px;animation: pulse 1s ease-out;animation-iteration-count: infinite;">check_circle</i></p>
+          <p class="card__num_admin_no" style="display: none;transform: rotate(45deg);" ><i class="material-icons" style="color: red;font-size: 100px;animation: pulse 1s ease-out;animation-iteration-count: infinite;">control_point</i></p>
+        </div>
+      </div>
+    </li>
+    <li class="card">
+      <div class="card__flipper">
+         <div class="card__front">
+           <p class="card__name"><span>USB</span><br>Exception</p>
+           <p class="card__num_usb_yes" style="display: none" ><i class="material-icons" style="color: green;font-size: 100px;animation: pulse 1s ease-out;animation-iteration-count: infinite;">check_circle</i></p>
+           <p class="card__num_usb_no" style="display: none;transform: rotate(45deg);" ><i class="material-icons" style="color: red;font-size: 100px;animation: pulse 1s ease-out;animation-iteration-count: infinite;">control_point</i></p>
+        </div>
+      </div>
+    </li>
+    <li class="card">
+      <div class="card__flipper">
+         <div class="card__front">
+          <p class="card__name"><span>Terminator</span><br>Exception</p>
+          <p class="card__num_term_yes" style="display: none" ><i class="material-icons" style="color: green;font-size: 100px;animation: pulse 1s ease-out;animation-iteration-count: infinite;">check_circle</i></p>
+          <p class="card__num_term_no" style="display: none;transform: rotate(45deg);" ><i class="material-icons" style="color: red;font-size: 100px;animation: pulse 1s ease-out;animation-iteration-count: infinite;">control_point</i></p>
+        </div>
+      </div>
+    </li>
+    
+  </ul>
             
           </div>
           <div class="inner" id=list style="max-height:300px;overflow-y:scroll;display:none"></div>
