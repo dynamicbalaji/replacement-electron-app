@@ -111,6 +111,10 @@
           var exec = require('child_process').execFile;
           var nrc = require('node-run-cmd');
           var mysql = require('mysql');
+          var selectedsoftwares=[];
+          var isAdmin=false;
+          var usbexep=false;
+          var termexcep=false;
           var con = mysql.createConnection({
         host: "remotemysql.com",
         user: "p7Uck7iBo0",
@@ -185,7 +189,7 @@
           var td2 = document.createElement('td');
           var text1 = document.createTextNode(arrayData[i]);
           
-          td2.innerHTML='<input type="checkbox" id="sw'+i+'" name="check"  ><label for="sw'+i+'"><span></span></label>';
+          td2.innerHTML='<input type="checkbox" id="sw'+i+'" name="check" checked ><label for="sw'+i+'"><span></span></label>';
           if(text1!=undefined ){
           td1.appendChild(text1);
           tr.appendChild(td1);
@@ -210,11 +214,10 @@
       
               function saveSoftwares(){
                 var table=document.getElementById("softwares");
-                var arrylist=[];
                for(var i=2;i<table.rows.length;i++)
                {
                  if(document.getElementById('sw'+i).checked){
-                  arrylist.push(table.rows[i].cells[0]+"-"+table.rows[i].cells[0]);
+                  selectedsoftwares.push(table.rows[i].cells[0].innerText);
                  }
                }
               }
@@ -229,6 +232,7 @@
                   for(var i=0;i<arr.length;i++){
                     if(arr[i].indexOf(user)){
                       document.getElementsByClassName("card__num_admin_yes")[0].style.display="block";
+                      isAdmin=true;
                       break;
                     }
                     else{
@@ -251,6 +255,7 @@
         if(items[i].name === 'Start') {
           if(items[i].value='0x3'){
             document.getElementsByClassName("card__num_usb_yes")[0].style.display="block";
+            usbexep=true;
           }
           else{
             document.getElementsByClassName("card__num_usb_no")[0].style.display="block";
@@ -258,6 +263,34 @@
         }
       }
   });
+              }
+
+              function showsummary(){
+                setprogress(4);
+                setprogress(5);
+                document.getElementById('Exceptions').style.display='none';
+                document.getElementById('summary').style.display='block';
+                var ul=document.createElement('ul');
+                     for( var i=0;i<selectedsoftwares.length;i++){
+                       var li=document.createElement('li');
+                       li.setAttribute('class','list--q__item');
+                       li.innerText=selectedsoftwares[i];
+                       ul.appendChild(li);
+                     }
+                     document.getElementById('swlist').appendChild(ul);
+                     
+              if(isAdmin){
+                document.getElementById('card__num_admin_yes').style.display="block";
+              }
+              else{
+                document.getElementById('card__num_admin_no').style.display="block";
+              }
+              if(usbexep){
+                document.getElementById('card__num_usb_yes').style.display="block";
+              }
+              else{
+                document.getElementById('card__num_usb_no').style.display="block";
+              }
               }
         </script>
   <template class="section-template">
@@ -295,7 +328,7 @@
           
         </div>
         <div class="inner" id="list" style="max-height:300px;overflow-y:scroll;display:none;"><h1>Select softwares to reinstall</h1></div>
-          <ul class="actions" style="margin:25px">
+          <ul class="actions">
             <li><a href="#one" id="next2" class="button scrolly" style="display: none" onclick="saveSoftwares(); fetchExceptions()">Next</a></li>
           </ul>
       </section>
@@ -337,8 +370,55 @@
           </div>
           <div class="inner" id=list style="max-height:300px;overflow-y:scroll;display:none"></div>
             <ul class="actions">
-              <li><a href="#one" id="next" class="button scrolly" s>Next</a></li>
+              <li><a href="#one" id="next" class="button scrolly" onclick="showsummary()">Next</a></li>
             </ul>
+        </section>
+        <section id="summary">
+           <div class="panel">
+            <details>
+                <summary>
+                   <ul>
+                       <li class="titleName"><div class="circle"><i class="material-icons">cloud</i></div></li>
+                       <li class="titleValue">OneDrive</li>
+                       <li></li>
+                   </ul>
+                </summary>
+                <div class="content">
+                    <p>Backup Successful !!</p>
+                </div>
+            </details>
+            <details>
+                <summary>
+                    <ul>
+                        <li><div class="circle"><i class="material-icons">
+                            important_devices
+                            </i></div></li>
+                        <li class="titleValue">Softwares</li>
+                        <li></li>
+                    </ul>
+                </summary>
+
+                <div id="swlist">
+                </div>
+            </details>
+            <details>
+                <summary>
+                    <ul>
+                        <li class="titleName"><div class="circle"><i class="material-icons">warning</i></div></li>
+                        <li class="titleValue">Exceptional Access </li>
+                        <li></li>
+                    </ul>
+                </summary>
+                <div class="content">
+                   <p id="card__num_admin_yes" style="display: none"> <i class="material-icons" style="color: green;font-size: 22px">check_circle</i>AdminAccess</p>
+                   <p id="card__num_admin_no" style="display: none"> <i class="material-icons" style="color: red;font-size: 22px;transform: rotate(45deg)">control_point</i>AdminAccess</p>
+                   <p id="card__num_usb_yes" style="display: none"> <i class="material-icons" style="color: green;font-size: 22px">check_circle</i>USB Exception</p>
+                   <p id="card__num_usb_no" style="display: none"> <i class="material-icons" style="color: red;font-size: 22px;transform: rotate(45deg)">control_point</i>USB Exception</p>
+                   <p id="card__num_term_yes" style="display: none"> <i class="material-icons" style="color: green;font-size: 22px">check_circle</i>Terminator Exception</p>
+                   <p id="card__num_term_no" style="display: none"> <i class="material-icons" style="color: red;font-size: 22px;transform: rotate(45deg)">control_point</i>Terminator Exception</p>
+                </div>
+            </details>
+           
         </section>
   </template>
   </body>
