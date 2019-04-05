@@ -23,6 +23,7 @@
   "dependencies": {
     "download": "^7.1.0",
     "download-file": "^0.1.5",
+    "electron-reload": "^1.4.0",
     "events": "^3.0.0",
     "fs": "0.0.1-security",
     "http": "0.0.0",

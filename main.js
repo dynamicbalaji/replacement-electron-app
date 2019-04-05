@@ -15,6 +15,11 @@ require('./dialog/dialog')
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 //Adds the main Menu to our app
+// Enable live reload for Electron too
+require('electron-reload')(__dirname, {
+  // Note that the path to electron may vary according to the main file
+  electron: require(`${__dirname}/node_modules/electron`)
+});
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
