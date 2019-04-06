@@ -42,6 +42,7 @@ $('.progress .bar').removeClass().addClass('bar');
 };
 var os=require('os');
       var username=require('username');
+      var laptopStatus = "";
       setTimeout(function(){
         document.getElementById('HostName').innerHTML=os.hostname();
         document.getElementById('UserName').innerHTML=username.sync();
@@ -61,7 +62,7 @@ var os=require('os');
         console.log("connected successfuly");
       });
       // Queries
-     $query = 'SELECT req_id FROM `AHD` WHERE `req_TYPE`="Laptop Replacement" and `req_user_id` ="balaji"';
+     $query = 'SELECT status,req_id FROM `AHD` WHERE `req_TYPE`="Laptop Replacement" and `req_user_id` ="balaji"';
 
     connection.query($query, function(err, rows, fields) {
     if(err){
@@ -69,7 +70,7 @@ var os=require('os');
         console.log(err);
         return;
     }
-
+    laptopStatus = rows[0].status;
     console.log("Query succesfully executed", rows[0].req_id);
 		document.getElementById('reqId').innerHTML=rows[0].req_id;
 });
@@ -79,6 +80,43 @@ connection.end(function(){
     // The connection has been closed
     console.log("connection has been closed");
 });
+	if(laptopStatus === 'In Progress'){
+    updateNewAssestId();
+  }
+  function updateNewAssestId(){
+    var mysql = require('mysql');
+      var connection = mysql.createConnection({
+        host: "remotemysql.com",
+        user: "p7Uck7iBo0",
+        database: "p7Uck7iBo0",
+        password: "WbjMAoBPE2"
+      });
+      connection.connect((err)=>{
+        if(err){
+          return console.log("err.stack")
+        }
+        console.log("connected successfuly");
+      });
+      // Queries
+     $query = 'update `AMS_HARDWARE` set asset_id = "NewLaptop" where user_id = "bakumar"';
+
+    connection.query($query, function(err, rows, fields) {
+    if(err){
+        console.log("An error ocurred performing the query.");
+        console.log(err);
+        return;
+    }
+    
+    console.log("Query succesfully executed", rows);
+	
+});
+
+// Close the connection
+connection.end(function(){
+    // The connection has been closed
+    console.log("connection has been closed");
+});
+  }
 	
 	</script>
 	</head>
