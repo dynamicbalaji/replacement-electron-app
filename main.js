@@ -72,6 +72,8 @@ function createWindow () {
   secondWindow.loadURL(`file://${__dirname}/windows/ipcwindow.html`)
 
   require('./menu/mainmenu')
+
+  mainWindow.maximize();
 }
 
 ipcMain.on('open-second-window', (event, arg)=> {
