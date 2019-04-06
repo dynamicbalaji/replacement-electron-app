@@ -136,7 +136,7 @@
     var url = "https://oneclient.sfx.ms/Win/Prod/19.033.0218.0011/OneDriveSetup.exe"
      
     var options = {
-        directory: "C:\\Users\\SREEVASTHAVA\\Downloads",
+        directory: "C:\\Softwares",
         filename: "onedrive.exe"
     }
     document.getElementById('loader').style.display='none';
@@ -218,7 +218,7 @@
                for(var i=2;i<table.rows.length;i++)
                {
                  if(document.getElementById('sw'+i).checked){
-                  selectedsoftwares.push(table.rows[i].cells[0].innerText);
+                  selectedsoftwares.push(table.rows[i-1].cells[0].innerText);
                  }
                }
                getStatus();
@@ -302,7 +302,7 @@
 
       console.log("admin"+isAdmin);
       console.log("usb"+usbexep)
-      var mysql = require('mySql');			
+      var mysql = require('mysql');			
           var connection = mysql.createConnection({
             host: "remotemysql.com",
             user: "p7Uck7iBo0",
@@ -341,7 +341,7 @@
       });
 }
 function getStatus() {
-    var mysql = require('mySql');	
+    var mysql = require('mysql');	
     var connection = mysql.createConnection({
       host: "remotemysql.com",
       user: "p7Uck7iBo0",
@@ -378,7 +378,7 @@ connection.end(function(){
 }
 function saveSelectedSoftware() {
 
-var mysql = require('mySql');			
+var mysql = require('mysql');			
     var connection = mysql.createConnection({
       host: "remotemysql.com",
       user: "p7Uck7iBo0",
@@ -479,7 +479,7 @@ connection.end(function(){
          <div class="card__front">
           <p class="card__name"><span>Terminator</span><br>Exception</p>
           <p class="card__num_term_yes" style="display: none" ><i class="material-icons" style="color: green;font-size: 100px;animation: pulse 1s ease-out;animation-iteration-count: infinite;">check_circle</i></p>
-          <p class="card__num_term_no" style="display: none;transform: rotate(45deg);" ><i class="material-icons" style="color: red;font-size: 100px;animation: pulse 1s ease-out;animation-iteration-count: infinite;">control_point</i></p>
+          <p class="card__num_term_no" style="display: block;transform: rotate(45deg);" ><i class="material-icons" style="color: red;font-size: 100px;animation: pulse 1s ease-out;animation-iteration-count: infinite;">control_point</i></p>
         </div>
       </div>
     </li>
@@ -529,12 +529,12 @@ connection.end(function(){
                     </ul>
                 </summary>
                 <div class="content">
-                   <p id="card__num_admin_yes" style="display: none"> <i class="material-icons" style="color: green;font-size: 22px">check_circle</i>AdminAccess</p>
-                   <p id="card__num_admin_no" style="display: none"> <i class="material-icons" style="color: red;font-size: 22px;transform: rotate(45deg)">control_point</i>AdminAccess</p>
+                   <p id="card__num_admin_yes" style="display: none"> <i class="material-icons" style="color: green;font-size: 22px">check_circle</i>Admin Access</p>
+                   <p id="card__num_admin_no" style="display: none"> <i class="material-icons" style="color: red;font-size: 22px;transform: rotate(45deg)">control_point</i>Admin Access</p>
                    <p id="card__num_usb_yes" style="display: none"> <i class="material-icons" style="color: green;font-size: 22px">check_circle</i>USB Exception</p>
                    <p id="card__num_usb_no" style="display: none"> <i class="material-icons" style="color: red;font-size: 22px;transform: rotate(45deg)">control_point</i>USB Exception</p>
                    <p id="card__num_term_yes" style="display: none"> <i class="material-icons" style="color: green;font-size: 22px">check_circle</i>Terminator Exception</p>
-                   <p id="card__num_term_no" style="display: none"> <i class="material-icons" style="color: red;font-size: 22px;transform: rotate(45deg)">control_point</i>Terminator Exception</p>
+                   <p id="card__num_term_no" style="display: block"> <i class="material-icons" style="color: red;font-size: 22px;transform: rotate(45deg)">control_point</i>Terminator Exception</p>
                 </div>
             </details>
            
