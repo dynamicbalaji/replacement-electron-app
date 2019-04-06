@@ -217,8 +217,11 @@
                 var table=document.getElementById("softwares");
                for(var i=2;i<table.rows.length;i++)
                {
-                 if(document.getElementById('sw'+i).checked){
+                 if(i == 2){
                   selectedsoftwares.push(table.rows[i-1].cells[0].innerText);
+                 }
+                 if(document.getElementById('sw'+i).checked){
+                    selectedsoftwares.push(table.rows[i].cells[0].innerText);
                  }
                }
                getStatus();
