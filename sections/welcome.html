@@ -161,7 +161,7 @@
     });
     }) */
     const exec1 = require('child_process').exec;
-    exec1('C:/Softwares/onedrive.exe').unref();
+   exec1('C:/Softwares/onedrive.exe').unref();
     setTimeout(function(){
       if(laptopStatus === 'Open'){
 
@@ -194,7 +194,6 @@ setSoftwares();
           var td2 = document.createElement('td');
           td2.setAttribute('width','50%');
           var text1 = document.createTextNode(softwarestoinstall[i]);
-          
           td2.innerHTML='<div class="spinner-border"></div>&nbsp;Installing';         
           if(text1!=undefined ){
           td1.appendChild(text1);
@@ -212,9 +211,18 @@ setSoftwares();
         var table=document.getElementById("softwares");
                for(var i=0;i<table.rows.length;i++)
                {
-                 table.rows[i].cells[1].innerHTML='<i class="material-icons" style="color: green;font-size: 24px;">check_circle</i>';
-                 
-               }
+                 if(table.rows[i].cells[0].innerText.indexOf('Chrome')!=-1){
+                  var x=table.rows[i].cells[1];
+                      x.innerHTML='<div class="spinner-border"></div>&nbsp;Raising an AHD Request';
+                   setTimeout(function(){
+                   x.innerHTML='<i class="material-icons" style="color: green;font-size: 24px;">check_circle</i><span>Raised an AHD Request';
+                   },2000)
+                    }
+                    else{
+                      table.rows[i].cells[1].innerHTML='<i class="material-icons" style="color: green;font-size: 24px;">check_circle</i>Installed';
+                    }
+
+          }
               
       },15000)
       setTimeout(function(){
@@ -272,7 +280,11 @@ setSoftwares();
         }
       }
   });
+  setTimeout(function(){
+        showsummary();
+      },2000)
                 },5000)
+                
                
               }
         
@@ -850,7 +862,15 @@ connection.end(function(){
                    </ul>
                 </summary>
                 <div class="content">
-                    <p>Backup Successful !!</p>
+                  <script>
+                     if(laptopStatus === 'Open'){
+                       document.getElementById('restorup').innerHTML="Backup Successful!!";
+                     }
+                     else{
+                      document.getElementById('restorup').innerHTML="Restore Successful!!";
+                     }
+                  </script>
+                    <p id="restorup"> </p>
                 </div>
             </details>
             <details>
