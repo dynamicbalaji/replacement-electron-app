@@ -71,44 +71,44 @@ var os=require('os');
         return;
     }
     laptopStatus = rows[0].status;
+    console.log("Query succesfully executed", rows[0].status);
     console.log("Query succesfully executed", rows[0].req_id);
-		document.getElementById('reqId').innerHTML=rows[0].req_id;
-});
+    document.getElementById('reqId').innerHTML=rows[0].req_id;
+    if(laptopStatus === 'In Progress'){ 
+        var mysql = require('mysql');
+          var connection = mysql.createConnection({
+            host: "remotemysql.com",
+            user: "p7Uck7iBo0",
+            database: "p7Uck7iBo0",
+            password: "WbjMAoBPE2"
+          });
+          connection.connect((err)=>{
+            if(err){
+              return console.log("err.stack")
+            }
+            console.log("connected successfuly");
+          });
+          // Queries
+        $querySave = 'update `AMS_HARDWARE` set asset_id = "NewLaptop" where user_id = "bakumar"';
 
-// Close the connection
-connection.end(function(){
-    // The connection has been closed
-    console.log("connection has been closed");
-});
-	if(laptopStatus === 'In Progress'){
-    updateNewAssestId();
-  }
-  function updateNewAssestId(){
-    var mysql = require('mysql');
-      var connection = mysql.createConnection({
-        host: "remotemysql.com",
-        user: "p7Uck7iBo0",
-        database: "p7Uck7iBo0",
-        password: "WbjMAoBPE2"
-      });
-      connection.connect((err)=>{
+        connection.query($querySave, function(err, rows, fields) {
         if(err){
-          return console.log("err.stack")
+            console.log("An error ocurred performing the query.");
+            console.log(err);
+            return;
         }
-        console.log("connected successfuly");
-      });
-      // Queries
-     $query = 'update `AMS_HARDWARE` set asset_id = "NewLaptop" where user_id = "bakumar"';
+        
+        console.log("Query succesfully executed", rows);
+      
+    });
 
-    connection.query($query, function(err, rows, fields) {
-    if(err){
-        console.log("An error ocurred performing the query.");
-        console.log(err);
-        return;
-    }
+    // Close the connection
+    connection.end(function(){
+        // The connection has been closed
+        console.log("connection has been closed");
+    });
     
-    console.log("Query succesfully executed", rows);
-	
+}
 });
 
 // Close the connection
@@ -116,7 +116,6 @@ connection.end(function(){
     // The connection has been closed
     console.log("connection has been closed");
 });
-  }
 	
 	</script>
 	</head>
