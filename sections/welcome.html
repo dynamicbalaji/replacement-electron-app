@@ -327,6 +327,9 @@
   if(laptopStatus === 'In Progress'){
     fetchExceptionalAccess();
   }
+  else {
+    saveSelectedSoftware();
+  }
 
               }
 
@@ -473,10 +476,7 @@ connection.end(function(){
   // The connection has been closed
   console.log("connection has been closed");
 });
-  if(laptopStatus === 'Open'){
-  saveSelectedSoftware();
-  }
-  else {
+  if(laptopStatus === 'In Progress'){  
     fetchSelectedSoftware();
   }
 }
@@ -509,9 +509,9 @@ var mysql = require('mysql');
   console.log("insert status:", rows);   
 });
 
-$query = 'INSERT INTO `REPLACEMENT_SOFTWARE` VALUES("balaji","Google Chrome")';
+$querySave = 'INSERT INTO `REPLACEMENT_SOFTWARE` VALUES("balaji","Google Chrome")';
 
-  connection.query($query, function(err, rows, fields) {
+  connection.query($querySave, function(err, rows, fields) {
   if(err){
       console.log("An error ocurred performing the query.");
       console.log(err);
