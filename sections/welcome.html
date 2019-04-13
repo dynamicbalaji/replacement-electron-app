@@ -719,6 +719,7 @@ var mysql = require('mySql');
   console.log("selected software"+rows[0])
   for (var i=0;i< rows.length;i++){
     softwarestoinstall.push(rows[i].SOFTWARE_NAME);
+    selectedsoftwares.push(rows[i].SOFTWARE_NAME);
   }
  
   console.log("fetchSelectedSoftware:", softwarestoinstall);   
