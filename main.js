@@ -10,7 +10,6 @@ const electron = require('electron')
 const app = electron.app
 const {ipcMain} = require('electron')
 var path = require('path')
-require('./dialog/dialog')
 
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
@@ -71,7 +70,7 @@ function createWindow () {
 
   secondWindow.loadURL(`file://${__dirname}/windows/ipcwindow.html`)
 
-  require('./menu/mainmenu')
+  //require('./menu/mainmenu')
 
   mainWindow.maximize();
 }

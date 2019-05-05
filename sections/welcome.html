@@ -1,657 +1,551 @@
 <head>
-    <style>
-        .ring-1 {
-      width: 10px;
-      height: 10px;
-      margin: 0 auto;
-      padding: 10px;
-      border: 7px dashed #4b9cdb;
-      border-radius: 100%;
-  }
-      
-      .load-4 .ring-1 {animation: loadingD 1.5s .3s cubic-bezier(.17,.37,.43,.67) infinite;}
-      @keyframes loadingD {
-      0% {transform: rotate(0deg);}
-      50% {transform: rotate(180deg);}
-      100% {transform: rotate(360deg);}
-  }
-
- label {
-	 display: inline-block;
-	 color: #fff;
-	 cursor: pointer;
-	 position: relative;
-}
- label span {
-	 display: inline-block;
-	 position: relative;
-	 background-color: transparent;
-	 width: 25px;
-	 height: 25px;
-	 transform-origin: center;
-	 border: 2px solid #fff;
-	 border-radius: 50%;
-	 vertical-align: -6px;
-	 margin-right: 10px;
-	 transition: background-color 150ms 200ms, transform 350ms cubic-bezier(0.78, -1.22, 0.17, 1.89);
-}
- label span:before {
-	 content: "";
-	 width: 0px;
-	 height: 2px;
-	 border-radius: 2px;
-	 background: #fff;
-	 position: absolute;
-	 transform: rotate(45deg);
-	 top: 13px;
-	 left: 9px;
-	 transition: width 50ms ease 50ms;
-	 transform-origin: 0% 0%;
-}
- label span:after {
-	 content: "";
-	 width: 0;
-	 height: 2px;
-	 border-radius: 2px;
-	 background: #fff;
-	 position: absolute;
-	 transform: rotate(305deg);
-	 top: 16px;
-	 left: 10px;
-	 transition: width 50ms ease;
-	 transform-origin: 0% 0%;
-}
- label:hover span:before {
-	 width: 5px;
-	 transition: width 100ms ease;
-}
- label:hover span:after {
-	 width: 10px;
-	 transition: width 150ms ease 100ms;
-}
- input[type="checkbox"] {
-	 display: none;
-}
- input[type="checkbox"]:checked + label span {
-	 background-color: #fff;
-	 transform: scale(1.25);
-}
- input[type="checkbox"]:checked + label span:after {
-	 width: 10px;
-	 background: #1790b5;
-	 transition: width 150ms ease 100ms;
-}
- input[type="checkbox"]:checked + label span:before {
-	 width: 5px;
-	 background: #1790b5;
-	 transition: width 150ms ease 100ms;
-}
- input[type="checkbox"]:checked + label:hover span {
-	 background-color: #fff;
-	 transform: scale(1.25);
-}
- input[type="checkbox"]:checked + label:hover span:after {
-	 width: 10px;
-	 background: #1790b5;
-	 transition: width 150ms ease 100ms;
-}
- input[type="checkbox"]:checked + label:hover span:before {
-	 width: 5px;
-	 background: #1790b5;
-	 transition: width 150ms ease 100ms;
-}
- 
-  
-      </style>
-   
-  </head>
-  <body>
-      <script>
-          const { ipcMain, dialog, app } = require('electron');
-          var exec = require('child_process').execFile;
-          var nrc = require('node-run-cmd');
-          var mysql = require('mysql');
-          var selectedsoftwares=[];
-          var softwarestoinstall=[];
-          var isAdmin=false;
-          var usbexep=false;
-          var termexcep=false;
-          var laptopStatus = '';	
-          var con = mysql.createConnection({
-        host: "remotemysql.com",
-        user: "p7Uck7iBo0",
-        password: "WbjMAoBPE2"
-      });
-      var os=require('os');
-      var username=require('username');
-      setTimeout(function(){
-        document.getElementById('HostName').innerHTML=os.hostname();
-        document.getElementById('UserName').innerHTML=username.sync();
-      },2000);
-      function callSetupOneDrive(){
-        setprogress(1);
-        getStatus();
-        document.getElementById('welcome').style.display='none';
-        document.getElementById('oneDrive').style.display='block';
-        var download = require('download-file')
-     
-    var url = "https://oneclient.sfx.ms/Win/Prod/19.033.0218.0011/OneDriveSetup.exe"
-     
-    var options = {
-        directory: "C:\\Softwares",
-        filename: "onedrive.exe"
-    }
-    //document.getElementById('loader').style.display='none';
-                  document.getElementById('next').style.display='block';
-     
-    /*download(url, options, function(err){
-    //if(err) throw err
-    document.getElementById('loader').style.display='none';
-                  document.getElementById('next').style.display='block';
-                 /* var child = require('child_process').execFile;
-    var executablePath = "C:\\Users\\SREEVASTHAVA\\Downloads\\onedrive.exe";
-    
-    child(executablePath, function(err, data) {
-        if(err){
-           console.error(err);
-           return;
-        }
-     
-        console.log(data.toString());
+    <script>
+        const { ipcMain, dialog, app } = require('electron');
+        var exec = require('child_process').execFile;
+        var nrc = require('node-run-cmd');
+        var mysql = require('mysql');
+        var selectedsoftwares=[];
+        var softwarestoinstall=[];
+        var isAdmin=false;
+        var usbexep=false;
+        var termexcep=false;
+        var laptopStatus = '';	
+        var con = mysql.createConnection({
+      host: "remotemysql.com",
+      user: "p7Uck7iBo0",
+      password: "WbjMAoBPE2"
     });
-    }) */
-    const exec1 = require('child_process').exec;
-   exec1('C:/Softwares/onedrive.exe').unref();
+    var os=require('os');
+    var username=require('username');
     setTimeout(function(){
-      if(laptopStatus === 'Open'){
+      document.getElementById('HostName').innerHTML=os.hostname();
+      document.getElementById('UserName').innerHTML=username.sync();
+    },2000);
+    function callSetupOneDrive(){
+      setprogress(1);
+      getStatus();
+      document.getElementById('welcome').style.display='none';
+      document.getElementById('oneDrive').style.display='block';
+      var download = require('download-file')
+   
+  var url = "https://oneclient.sfx.ms/Win/Prod/19.033.0218.0011/OneDriveSetup.exe"
+   
+  var options = {
+      directory: "C:\\Softwares",
+      filename: "onedrive.exe"
+  }
+ 
+                document.getElementById('next').style.display='block';
+   
+  /*download(url, options, function(err){
+  //if(err) throw err
+  document.getElementById('loader').style.display='none';
+                document.getElementById('next').style.display='block';
+               /* var child = require('child_process').execFile;
+  var executablePath = "C:\\Users\\SREEVASTHAVA\\Downloads\\onedrive.exe";
+  
+  child(executablePath, function(err, data) {
+      if(err){
+         console.error(err);
+         return;
+      }
+   
+      console.log(data.toString());
+  });
+  }) */
+  const exec1 = require('child_process').exec;
+ exec1('C:/Softwares/onedrive.exe').unref();
+  setTimeout(function(){
+    if(laptopStatus === 'Open'){
 
 fetchSoftwares();
 }
 else {
 setSoftwares();
 }
-      },20000)
-    
+    },20000)
+  
+  
+  }
+   
+    function setSoftwares(){
+      document.getElementById('oneDrive').style.display='none';
+              document.getElementById('SoftWareList').style.display='block';
+              document.getElementById('inProgress').style.display='block';       
+      
+      var table = document.createElement('table');
+              table.setAttribute('id','softwares');
+              const exec1 = require('child_process').exec;
+        exec1('C:/Softwares/wordweb8.exe').unref();
+      for(var i=0;i<softwarestoinstall.length;i++){
+        var tr = document.createElement('tr'); 
+        var td1 = document.createElement('td');
+        td1.setAttribute('width','50%');
+        var td2 = document.createElement('td');
+        td2.setAttribute('width','50%');
+        var text1 = document.createTextNode(softwarestoinstall[i]);
+        td2.innerHTML='<div class="spinner-border"></div>&nbsp;Installing';         
+        if(text1!=undefined ){
+        td1.appendChild(text1);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        table.appendChild(tr);
+      }
     
     }
-     
-      function setSoftwares(){
-        document.getElementById('oneDrive').style.display='none';
-                document.getElementById('SoftWareList').style.display='block';
-                document.getElementById('inProgress').style.display='block';
+    document.getElementById('list').style.display='table';
+        document.getElementById('list').appendChild(table);
+        document.getElementById('fetching').style.display='none';
+              document.getElementById('next2').style.display='block';
+    setTimeout(function(){
+      var table=document.getElementById("softwares");
+             for(var i=0;i<table.rows.length;i++)
+             {
+               if(table.rows[i].cells[0].innerText.indexOf('Chrome')!=-1){
+                var x=table.rows[i].cells[1];
+                    x.innerHTML='<div class="spinner-border"></div>&nbsp;Raising an AHD Request';
+                 setTimeout(function(){
+                 x.innerHTML='<i class="material-icons" style="color: green;font-size: 24px;">check_circle</i><span>Raised an AHD Request';
+                 },2000)
+                  }
+                  else{
+                    table.rows[i].cells[1].innerHTML='<i class="material-icons" style="color: green;font-size: 24px;">check_circle</i>Installed';
+                  }
 
-        // var softwarestoinstall=['Google Chrome','Word Web'];
-        
-        
-        var table = document.createElement('table');
-                table.setAttribute('id','softwares');
-                const exec1 = require('child_process').exec;
-          exec1('C:/Softwares/wordweb8.exe').unref();
-        for(var i=0;i<softwarestoinstall.length;i++){
-          var tr = document.createElement('tr'); 
-          var td1 = document.createElement('td');
-          td1.setAttribute('width','50%');
-          var td2 = document.createElement('td');
-          td2.setAttribute('width','50%');
-          var text1 = document.createTextNode(softwarestoinstall[i]);
-          td2.innerHTML='<div class="spinner-border"></div>&nbsp;Installing';         
-          if(text1!=undefined ){
-          td1.appendChild(text1);
-          tr.appendChild(td1);
-          tr.appendChild(td2);
-          table.appendChild(tr);
         }
-      
-      }
-      document.getElementById('list').style.display='table';
-          document.getElementById('list').appendChild(table);
-          document.getElementById('fetching').style.display='none';
-                document.getElementById('next2').style.display='block';
-      setTimeout(function(){
-        var table=document.getElementById("softwares");
-               for(var i=0;i<table.rows.length;i++)
-               {
-                 if(table.rows[i].cells[0].innerText.indexOf('Chrome')!=-1){
-                  var x=table.rows[i].cells[1];
-                      x.innerHTML='<div class="spinner-border"></div>&nbsp;Raising an AHD Request';
-                   setTimeout(function(){
-                   x.innerHTML='<i class="material-icons" style="color: green;font-size: 24px;">check_circle</i><span>Raised an AHD Request';
-                   },2000)
-                    }
-                    else{
-                      table.rows[i].cells[1].innerHTML='<i class="material-icons" style="color: green;font-size: 24px;">check_circle</i>Installed';
-                    }
+            
+    },15000)
+    setTimeout(function(){
+      setExceptions();
+    },20000)
+  }
+        
+  function setExceptions(){
+              setprogress(3);
+              document.getElementById('SoftWareList').style.display='none';
+              document.getElementById('Exceptions').style.display="block";
+              setTimeout(function(){
+                var adminfetch = function (data) {
+                var username=require('username');
+                var user=username.sync();
+                var arr=data.split(/\n/);
+                for(var i=0;i<arr.length;i++){
+                  if(arr[i].indexOf(user)){
+                    document.getElementsByClassName('card__num_admin_setting')[0].style.display="none";
+                    document.getElementsByClassName("card__num_admin_yes")[0].style.display="block";
+                    isAdmin=true;
+                    break;
+                  }
+                  else{
+                    document.getElementsByClassName('card__num_admin_setting')[0].style.display="none";
+                    document.getElementsByClassName("card__num_admin_no")[0].style.display="block";
+                  }
+                }
+                }
+              nrc.run('net localgroup Administrators', { onData: adminfetch } );
+              },2000)
+              document.getElementsByClassName('card__num_usb_setting')[0].style.display='block';
+              setTimeout(function(){
+                var Registry = require('winreg')
+                 ,   regKey = new Registry({                                       // new operator is optional
+                 hive: Registry.HKLM,                                        // open registry hive HKEY_CURRENT_USER
+                key:  '\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR' // key containing autostart programs
+                       })
 
-          }
+        regKey.values(function (err, items /* array of RegistryItem */) {
+          if (err)
+           console.log('ERROR: '+err);
+                  else
+    for (var i=0; i<items.length; i++){
+      if(items[i].name === 'Start') {
+        if(items[i].value='0x3'){
+          document.getElementsByClassName('card__num_usb_setting')[0].style.display="none";
+          document.getElementsByClassName("card__num_usb_yes")[0].style.display="block";
+          usbexep=true;
+        }
+        else{
+          document.getElementsByClassName('card__num_usb_setting')[0].style.display="none";
+          document.getElementsByClassName("card__num_usb_no")[0].style.display="block";
+        }
+      }
+    }
+});
+setTimeout(function(){
+      showsummary();
+    },2000)
+              },5000)
               
-      },15000)
-      setTimeout(function(){
-        setExceptions();
-      },20000)
-    }
-          
-    function setExceptions(){
-                setprogress(3);
-                document.getElementById('SoftWareList').style.display='none';
-                document.getElementById('Exceptions').style.display="block";
-                setTimeout(function(){
-                  var adminfetch = function (data) {
-                  var username=require('username');
-                  var user=username.sync();
-                  var arr=data.split(/\n/);
-                  for(var i=0;i<arr.length;i++){
-                    if(arr[i].indexOf(user)){
-                      document.getElementsByClassName('card__num_admin_setting')[0].style.display='none';
-                      document.getElementsByClassName("card__num_admin_yes")[0].style.display="block";
-                      isAdmin=true;
-                      break;
-                    }
-                    else{
-                      document.getElementsByClassName('card__num_admin_setting')[0].style.display='none';
-                      document.getElementsByClassName("card__num_admin_no")[0].style.display="block";
-                    }
-                  }
-                  }
-                nrc.run('net localgroup Administrators', { onData: adminfetch } );
-                },2000)
-                document.getElementsByClassName('card__num_usb_setting')[0].style.display='block';
-                setTimeout(function(){
-                  var Registry = require('winreg')
-                   ,   regKey = new Registry({                                       // new operator is optional
-                   hive: Registry.HKLM,                                        // open registry hive HKEY_CURRENT_USER
-                  key:  '\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR' // key containing autostart programs
-                         })
- 
-          regKey.values(function (err, items /* array of RegistryItem */) {
-            if (err)
-             console.log('ERROR: '+err);
-                    else
-      for (var i=0; i<items.length; i++){
-        if(items[i].name === 'Start') {
-          if(items[i].value='0x3'){
-            document.getElementsByClassName('card__num_usb_setting')[0].style.display='none';
-            document.getElementsByClassName("card__num_usb_yes")[0].style.display="block";
-            usbexep=true;
-          }
-          else{
-            document.getElementsByClassName('card__num_usb_setting')[0].style.display='none';
-            document.getElementsByClassName("card__num_usb_no")[0].style.display="block";
-          }
-        }
-      }
-  });
-  setTimeout(function(){
-        showsummary();
-      },2000)
-                },5000)
-                
-               
-              }
-        
-          
-              function fetchSoftwares(){
-               
-                setprogress(2);
-                //var loop1=false;
-                document.getElementById('oneDrive').style.display='none';
-                document.getElementById('SoftWareList').style.display='block';
-                document.getElementById('open').style.display='block';
-                var table = document.createElement('table');
-                table.setAttribute('id','softwares');
-              var tr = document.createElement('tr');   
-              var th1=document.createElement('th');
-              var th2=document.createElement('th');
-              th1.appendChild(document.createTextNode('NAME'));
-              th2.appendChild(document.createTextNode(''));
-              tr.appendChild(th1);
-              tr.appendChild(th2);
-              table.appendChild(tr);
-                var callback = function (data) {
-                  if(data.indexOf("Applications:")!=-1){
-                    loop1=true;
-                var arrayData=data.split("Applications:")[1].split(/\n/).sort();
-                
-      for (var i = 0; i < arrayData.length; i++){
-        if(arrayData[i]!=undefined && arrayData[i].trim()!=""){
-          var tr = document.createElement('tr'); 
-          var td1 = document.createElement('td');
-          var td2 = document.createElement('td');
-          var text1 = document.createTextNode(arrayData[i]);
-          
-          td2.innerHTML='<input type="checkbox" id="sw'+i+'" name="check" checked ><label for="sw'+i+'"><span></span></label>';
-          if(text1!=undefined ){
-          td1.appendChild(text1);
-          tr.appendChild(td1);
-          tr.appendChild(td2);
-          table.appendChild(tr);
-          }
-        }
-          document.getElementById('list').style.display='table';
-          document.getElementById('list').appendChild(table);
-      }
-                document.getElementById('fetching').style.display='none';
-                document.getElementById('next2').style.display='block';
-                  }
-              };
-              // nrc.run('wmic product get name,version /format:csv', { onData: callback } );
-              var commands = [
-      'psinfo -s'
-    ];
-    var options = { cwd: 'C:/Softwares/PSTools' , onData: callback };
-    nrc.run(commands, options);
-              }
-      //Changing asset id for software and raising AHD Request,        
-      if(laptopStatus === 'In Progress'){
-              var mysql = require('mySql');			
-          var connection = mysql.createConnection({
-            host: "remotemysql.com",
-            user: "p7Uck7iBo0",
-            database: "p7Uck7iBo0",
-            password: "WbjMAoBPE2"
-          });
-          connection.connect((err)=>{
-            if(err){
-              return console.log("err.stack")
+             
             }
-            console.log("connected successfuly");
-          });
-          // Queries for updating asset id
-          $query = 'update `AMS_SOFTWARE` set machine_name = "NewLaptop" where user_id ="balaji" and software_name = "Word Web8";';
-
-        connection.query($query, function(err, rows, fields) {
-        if(err){
-            console.log("An error ocurred performing the query.");
-            console.log(err);
-            return;
-        }
       
-        console.log("updating asset id:", rows);   
-      });
+        
+            function fetchSoftwares(){
+             
+              setprogress(2);
+              //var loop1=false;
+              document.getElementById('oneDrive').style.display='none';
+              document.getElementById('SoftWareList').style.display='block';
+              document.getElementById('open').style.display='block';
+              var table = document.createElement('table');
+              table.setAttribute('id','softwares');
+            var tr = document.createElement('tr');   
+            var th1=document.createElement('th');
+            var th2=document.createElement('th');
+            th1.appendChild(document.createTextNode('NAME'));
+            th2.appendChild(document.createTextNode(''));
+            tr.appendChild(th1);
+            tr.appendChild(th2);
+            table.appendChild(tr);
+              var callback = function (data) {
+                if(data.indexOf("Applications:")!=-1){
+                  loop1=true;
+              var arrayData=data.split("Applications:")[1].split(/\n/).sort();
+              
+    for (var i = 0; i < arrayData.length; i++){
+      if(arrayData[i]!=undefined && arrayData[i].trim()!=""){
+        var tr = document.createElement('tr'); 
+        var td1 = document.createElement('td');
+        var td2 = document.createElement('td');
+        var text1 = document.createTextNode(arrayData[i]);
+        
+        td2.innerHTML='<input type="checkbox" id="sw'+i+'" name="check" checked ><label for="sw'+i+'"><span></span></label>';
+        if(text1!=undefined ){
+        td1.appendChild(text1);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        table.appendChild(tr);
+        }
+      }
+        document.getElementById('list').style.display='table';
+        document.getElementById('list').appendChild(table);
+    }
+              document.getElementById('fetching').style.display='none';
+              document.getElementById('next2').style.display='block';
+                }
+            };
+            // nrc.run('wmic product get name,version /format:csv', { onData: callback } );
+            var commands = [
+    'psinfo -s'
+  ];
+  var options = { cwd: 'C:/Softwares/PSTools' , onData: callback };
+  nrc.run(commands, options);
+            }
+    //Changing asset id for software and raising AHD Request,        
+    if(laptopStatus === 'In Progress'){
+            var mysql = require('mySql');			
+        var connection = mysql.createConnection({
+          host: "remotemysql.com",
+          user: "p7Uck7iBo0",
+          database: "p7Uck7iBo0",
+          password: "WbjMAoBPE2"
+        });
+        connection.connect((err)=>{
+          if(err){
+            return console.log("err.stack")
+          }
+          console.log("connected successfuly");
+        });
+        // Queries for updating asset id
+        $query = 'update `AMS_SOFTWARE` set machine_name = "NewLaptop" where user_id ="balaji" and software_name = "Word Web8";';
 
-      // // Close the connection
-      // connection.end(function(){
-      //   // The connection has been closed
-      //   console.log("connection has been closed");
-      // });
-
-      // Queries for raising AHD
-            $querySave = 'insert into `AHD` values (3,"software","open","NewLaptop","Install Google Chrome","2019-04-06 09:30:00","2019-04-06 09:30:00","balaji","balaji");';
-
-      connection.query($querySave, function(err, rows, fields) {
+      connection.query($query, function(err, rows, fields) {
       if(err){
           console.log("An error ocurred performing the query.");
           console.log(err);
           return;
       }
+    
+      console.log("updating asset id:", rows);   
+    });
 
-      console.log("raising AHD:", rows);   
-      });
+    // // Close the connection
+    // connection.end(function(){
+    //   // The connection has been closed
+    //   console.log("connection has been closed");
+    // });
 
-      // Close the connection
-      connection.end(function(){
-      // The connection has been closed
-      console.log("connection has been closed");
-      });
-  }
+    // Queries for raising AHD
+          $querySave = 'insert into `AHD` values (3,"software","open","NewLaptop","Install Google Chrome","2019-04-06 09:30:00","2019-04-06 09:30:00","balaji","balaji");';
 
-      
-              function saveSoftwares(){
-                var table=document.getElementById("softwares");
-               for(var i=2;i<table.rows.length;i++)
-               {
-                 if(i == 2){
-                  selectedsoftwares.push(table.rows[i-1].cells[0].innerText);
-                 }
-                 if(document.getElementById('sw'+i).checked){
-                    selectedsoftwares.push(table.rows[i].cells[0].innerText);
-                 }
+    connection.query($querySave, function(err, rows, fields) {
+    if(err){
+        console.log("An error ocurred performing the query.");
+        console.log(err);
+        return;
+    }
+
+    console.log("raising AHD:", rows);   
+    });
+
+    // Close the connection
+    connection.end(function(){
+    // The connection has been closed
+    console.log("connection has been closed");
+    });
+}
+
+    
+            function saveSoftwares(){
+              var table=document.getElementById("softwares");
+             for(var i=2;i<table.rows.length;i++)
+             {
+               if(i == 2){
+                selectedsoftwares.push(table.rows[i-1].cells[0].innerText);
                }
-               getStatus();
-              }
-              function fetchExceptions(){
-                setprogress(3);
-                document.getElementById('SoftWareList').style.display='none';
-                document.getElementById('Exceptions').style.display="block";
-                var adminfetch = function (data) {
-                  var username=require('username');
-                  var user=username.sync();
-                  var arr=data.split(/\n/);
-                  for(var i=0;i<arr.length;i++){
-                    if(arr[i].indexOf(user)){
-                      document.getElementsByClassName("card__num_admin_yes")[0].style.display="block";
-                      isAdmin=true;
-                      break;
-                    }
-                    else{
-                      document.getElementsByClassName("card__num_admin_no")[0].style.display="block";
-                    }
+               if(document.getElementById('sw'+i).checked){
+                  selectedsoftwares.push(table.rows[i].cells[0].innerText);
+               }
+             }
+             getStatus();
+            }
+            function fetchExceptions(){
+              setprogress(3);
+              document.getElementById('SoftWareList').style.display='none';
+              document.getElementById('Exceptions').style.display="block";
+              var adminfetch = function (data) {
+                var username=require('username');
+                var user=username.sync();
+                var arr=data.split(/\n/);
+                for(var i=0;i<arr.length;i++){
+                  if(arr[i].indexOf(user)){
+                    document.getElementsByClassName("card__num_admin_yes")[0].style.display="block";
+                    document.getElementsByClassName('card__num_usb_setting')[0].style.display="none";
+                    isAdmin=true;
+                    break;
                   }
+                  else{
+                    document.getElementsByClassName("card__num_admin_no")[0].style.display="block";
+                    document.getElementsByClassName('card__num_usb_setting')[0].style.display="none";
                   }
-                nrc.run('net localgroup Administrators', { onData: adminfetch } );
-                var Registry = require('winreg')
-                   ,   regKey = new Registry({                                       // new operator is optional
-                   hive: Registry.HKLM,                                        // open registry hive HKEY_CURRENT_USER
-                  key:  '\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR' // key containing autostart programs
-                         })
- 
-          regKey.values(function (err, items /* array of RegistryItem */) {
-            if (err)
-             console.log('ERROR: '+err);
-                    else
-      for (var i=0; i<items.length; i++){
-        if(items[i].name === 'Start') {
-          if(items[i].value='0x3'){
-            document.getElementsByClassName("card__num_usb_yes")[0].style.display="block";
-            usbexep=true;
-          }
-          else{
-            document.getElementsByClassName("card__num_usb_no")[0].style.display="block";
-          }
+                }
+                }
+              nrc.run('net localgroup Administrators', { onData: adminfetch } );
+              var Registry = require('winreg')
+                 ,   regKey = new Registry({                                       // new operator is optional
+                 hive: Registry.HKLM,                                        // open registry hive HKEY_CURRENT_USER
+                key:  '\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR' // key containing autostart programs
+                       })
+
+        regKey.values(function (err, items /* array of RegistryItem */) {
+          if (err)
+           console.log('ERROR: '+err);
+                  else
+    for (var i=0; i<items.length; i++){
+      if(items[i].name === 'Start') {
+        if(items[i].value='0x3'){
+          document.getElementsByClassName("card__num_usb_yes")[0].style.display="block";
+          document.getElementsByClassName('card__num_admin_setting')[0].style.display="none";
+          usbexep=true;
+        }
+        else{
+          document.getElementsByClassName("card__num_usb_no")[0].style.display="block";
+          document.getElementsByClassName('card__num_admin_setting')[0].style.display="none";
         }
       }
-  });
+    }
+});
 
-  if(laptopStatus === 'In Progress'){
-    fetchExceptionalAccess();
-  }
-  else {
-    saveSelectedSoftware();
-  }
+if(laptopStatus === 'In Progress'){
+  fetchExceptionalAccess();
+}
+else {
+  saveSelectedSoftware();
+}
 
-              }
+            }
 
-              function showsummary(){
-                setprogress(4);
-                setprogress(5);
-                document.getElementById('Exceptions').style.display='none';
-                document.getElementById('summary').style.display='block';
-                var ul=document.createElement('ul');
-                     for( var i=0;i<selectedsoftwares.length;i++){
-                       var li=document.createElement('li');
-                       li.setAttribute('class','list--q__item');
-                       li.innerText=selectedsoftwares[i];
-                       ul.appendChild(li);
-                     }
-                     document.getElementById('swlist').appendChild(ul);
-                     
-              if(isAdmin){
-                document.getElementById('card__num_admin_yes').style.display="block";
-              }
-              else{
-                document.getElementById('card__num_admin_no').style.display="block";
-              }
-              if(usbexep){
-                document.getElementById('card__num_usb_yes').style.display="block";
-              }
-              else{
-                document.getElementById('card__num_usb_no').style.display="block";
-              }
-              if(laptopStatus === 'Open'){
-               saveExceptionalAccess(isAdmin,usbexep);
-               updateAhdRequest();
-              }
-              else if(laptopStatus === 'In Progress'){
-                closeTicket();
-              }             
-      }
-      function closeTicket() {
+            function showsummary(){
+              setprogress(4);
+              setprogress(5);
+              document.getElementById('Exceptions').style.display='none';
+              document.getElementById('summary').style.display='block';
+              var ul=document.createElement('ul');
+                   for( var i=0;i<selectedsoftwares.length;i++){
+                     var li=document.createElement('li');
+                     li.setAttribute('class','list--q__item');
+                     li.innerText=selectedsoftwares[i];
+                     ul.appendChild(li);
+                   }
+                   document.getElementById('swlist').appendChild(ul);
+                   
+            if(isAdmin){
+              document.getElementById('card__num_admin_yes').style.display="block";
+            }
+            else{
+              document.getElementById('card__num_admin_no').style.display="block";
+            }
+            if(usbexep){
+              document.getElementById('card__num_usb_yes').style.display="block";
+            }
+            else{
+              document.getElementById('card__num_usb_no').style.display="block";
+            }
+            if(laptopStatus === 'Open'){
+             saveExceptionalAccess(isAdmin,usbexep);
+             updateAhdRequest();
+            }
+            else if(laptopStatus === 'In Progress'){
+              closeTicket();
+            }             
+    }
+    function closeTicket() {
 
 var mysql = require('mySql');			
-    var connection = mysql.createConnection({
-      host: "remotemysql.com",
-      user: "p7Uck7iBo0",
-      database: "p7Uck7iBo0",
-      password: "WbjMAoBPE2"
-    });
-    connection.connect((err)=>{
-      if(err){
-        return console.log("err.stack")
-      }
-      console.log("connected successfuly");
-    });
-    // Queries
-    $query = 'update `AHD` set status = "Closed" where req_id = "123457" and req_type = "Laptop Replacement"';
+  var connection = mysql.createConnection({
+    host: "remotemysql.com",
+    user: "p7Uck7iBo0",
+    database: "p7Uck7iBo0",
+    password: "WbjMAoBPE2"
+  });
+  connection.connect((err)=>{
+    if(err){
+      return console.log("err.stack")
+    }
+    console.log("connected successfuly");
+  });
+  // Queries
+  $query = 'update `AHD` set status = "Closed" where req_id = "123457" and req_type = "Laptop Replacement"';
 
-  connection.query($query, function(err, rows, fields) {
-  if(err){
-      console.log("An error ocurred performing the query.");
-      console.log(err);
-      return;
-  }
+connection.query($query, function(err, rows, fields) {
+if(err){
+    console.log("An error ocurred performing the query.");
+    console.log(err);
+    return;
+}
 
-  console.log("closeTicket:", rows);   
+console.log("closeTicket:", rows);   
 });
 
 // Close the connection
 connection.end(function(){
-  // The connection has been closed
-  console.log("connection has been closed");
+// The connection has been closed
+console.log("connection has been closed");
 });
 
 }
-    function saveExceptionalAccess(isAdmin,usbexep) {
+  function saveExceptionalAccess(isAdmin,usbexep) {
 
-      console.log("admin"+isAdmin);
-      console.log("usb"+usbexep)
-      var mysql = require('mysql');			
-          var connection = mysql.createConnection({
-            host: "remotemysql.com",
-            user: "p7Uck7iBo0",
-            database: "p7Uck7iBo0",
-            password: "WbjMAoBPE2"
-          });
-          connection.connect((err)=>{
-            if(err){
-              return console.log("err.stack")
-            }
-            console.log("connected successfuly");
-          });
-          // Queries
-          if(isAdmin && usbexep) {
-            $query = 'INSERT INTO `REPLACEMENT_CONFIGS` VALUES("balaji","Y","Y","N","balaji","2019-04-06 03:00:00")';
+    console.log("admin"+isAdmin);
+    console.log("usb"+usbexep)
+    var mysql = require('mysql');			
+        var connection = mysql.createConnection({
+          host: "remotemysql.com",
+          user: "p7Uck7iBo0",
+          database: "p7Uck7iBo0",
+          password: "WbjMAoBPE2"
+        });
+        connection.connect((err)=>{
+          if(err){
+            return console.log("err.stack")
           }
-          else if(isAdmin) {
-            $query = 'INSERT INTO `REPLACEMENT_CONFIGS` VALUES("balaji","Y","N","N","balaji","2019-04-06 03:00:00")';
-          }
-          else if(usbexep) {
-            $query = 'INSERT INTO `REPLACEMENT_CONFIGS` VALUES("balaji","N","Y","N","balaji","2019-04-06 03:00:00")';
-          }
-        
-        connection.query($query, function(err, rows, fields) {
-        if(err){
-            console.log("An error ocurred performing the query.");
-            console.log(err);
-            return;
+          console.log("connected successfuly");
+        });
+        // Queries
+        if(isAdmin && usbexep) {
+          $query = 'INSERT INTO `REPLACEMENT_CONFIGS` VALUES("balaji","Y","Y","N","balaji","2019-04-06 03:00:00")';
         }
-      });
+        else if(isAdmin) {
+          $query = 'INSERT INTO `REPLACEMENT_CONFIGS` VALUES("balaji","Y","N","N","balaji","2019-04-06 03:00:00")';
+        }
+        else if(usbexep) {
+          $query = 'INSERT INTO `REPLACEMENT_CONFIGS` VALUES("balaji","N","Y","N","balaji","2019-04-06 03:00:00")';
+        }
+      
+      connection.query($query, function(err, rows, fields) {
+      if(err){
+          console.log("An error ocurred performing the query.");
+          console.log(err);
+          return;
+      }
+    });
 
-      // Close the connection
-      connection.end(function(){
-        // The connection has been closed
-        console.log("connection has been closed");
-      });
+    // Close the connection
+    connection.end(function(){
+      // The connection has been closed
+      console.log("connection has been closed");
+    });
 }
 function getStatus() {
-    var mysql = require('mysql');	
-    var connection = mysql.createConnection({
-      host: "remotemysql.com",
-      user: "p7Uck7iBo0",
-      database: "p7Uck7iBo0",
-      password: "WbjMAoBPE2"
-    });
-    connection.connect((err)=>{
-      if(err){
-        return console.log("err.stack")
-      }
-      console.log("connected successfuly");
-    });
-    // Queries
-    $query = 'SELECT status FROM `AHD` WHERE `req_TYPE`="Laptop Replacement" and `req_user_id` ="balaji"';
+  var mysql = require('mysql');	
+  var connection = mysql.createConnection({
+    host: "remotemysql.com",
+    user: "p7Uck7iBo0",
+    database: "p7Uck7iBo0",
+    password: "WbjMAoBPE2"
+  });
+  connection.connect((err)=>{
+    if(err){
+      return console.log("err.stack")
+    }
+    console.log("connected successfuly");
+  });
+  // Queries
+  $query = 'SELECT status FROM `AHD` WHERE `req_TYPE`="Laptop Replacement" and `req_user_id` ="balaji"';
 
-  connection.query($query, function(err, rows, fields) {
-  if(err){
-      console.log("An error ocurred performing the query.");
-      console.log(err);
-      return;
-  }
-  laptopStatus = rows[0].status;
-  console.log("status:", laptopStatus);   
+connection.query($query, function(err, rows, fields) {
+if(err){
+    console.log("An error ocurred performing the query.");
+    console.log(err);
+    return;
+}
+laptopStatus = rows[0].status;
+console.log("status:", laptopStatus);   
 });
 
 // Close the connection
 connection.end(function(){
-  // The connection has been closed
-  console.log("connection has been closed");
+// The connection has been closed
+console.log("connection has been closed");
 });
-  if(laptopStatus === 'In Progress'){  
-    fetchSelectedSoftware();
-  }
+if(laptopStatus === 'In Progress'){  
+  fetchSelectedSoftware();
+}
 }
 function saveSelectedSoftware() {
 
 var mysql = require('mysql');			
-    var connection = mysql.createConnection({
-      host: "remotemysql.com",
-      user: "p7Uck7iBo0",
-      database: "p7Uck7iBo0",
-      password: "WbjMAoBPE2"
-    });
-    connection.connect((err)=>{
-      if(err){
-        return console.log("err.stack")
-      }
-      console.log("connected successfuly");
-    });
-    
- // Queries
-    $query = 'INSERT INTO `REPLACEMENT_SOFTWARE` VALUES("balaji","Word Web")';
+  var connection = mysql.createConnection({
+    host: "remotemysql.com",
+    user: "p7Uck7iBo0",
+    database: "p7Uck7iBo0",
+    password: "WbjMAoBPE2"
+  });
+  connection.connect((err)=>{
+    if(err){
+      return console.log("err.stack")
+    }
+    console.log("connected successfuly");
+  });
+  
+// Queries
+  $query = 'INSERT INTO `REPLACEMENT_SOFTWARE` VALUES("balaji","Word Web")';
 
-  connection.query($query, function(err, rows, fields) {
-  if(err){
-      console.log("An error ocurred performing the query.");
-      console.log(err);
-      return;
-  }
- 
-  console.log("insert status:", rows);   
+connection.query($query, function(err, rows, fields) {
+if(err){
+    console.log("An error ocurred performing the query.");
+    console.log(err);
+    return;
+}
+
+console.log("insert status:", rows);   
 });
 
 $querySave = 'INSERT INTO `REPLACEMENT_SOFTWARE` VALUES("balaji","Google Chrome")';
 
-  connection.query($querySave, function(err, rows, fields) {
-  if(err){
-      console.log("An error ocurred performing the query.");
-      console.log(err);
-      return;
-  }
- 
-  console.log("insert status:", rows);   
+connection.query($querySave, function(err, rows, fields) {
+if(err){
+    console.log("An error ocurred performing the query.");
+    console.log(err);
+    return;
+}
+
+console.log("insert status:", rows);   
 });
 
 // Close the connection
 connection.end(function(){
-  // The connection has been closed
-  console.log("connection has been closed");
+// The connection has been closed
+console.log("connection has been closed");
 });
 
 }
@@ -660,114 +554,117 @@ connection.end(function(){
 function fetchExceptionalAccess() {
 
 var mysql = require('mySql');			
-    var connection = mysql.createConnection({
-      host: "remotemysql.com",
-      user: "p7Uck7iBo0",
-      database: "p7Uck7iBo0",
-      password: "WbjMAoBPE2"
-    });
-    connection.connect((err)=>{
-      if(err){
-        return console.log("err.stack")
-      }
-      console.log("connected successfuly");
-    });
-    // Queries
-    $query = 'SELECT admin_rights,USB_ENABLE,TERM_EXEP FROM `REPLACEMENT_CONFIGS` WHERE USER_ID= "balaji"';
+  var connection = mysql.createConnection({
+    host: "remotemysql.com",
+    user: "p7Uck7iBo0",
+    database: "p7Uck7iBo0",
+    password: "WbjMAoBPE2"
+  });
+  connection.connect((err)=>{
+    if(err){
+      return console.log("err.stack")
+    }
+    console.log("connected successfuly");
+  });
+  // Queries
+  $query = 'SELECT admin_rights,USB_ENABLE,TERM_EXEP FROM `REPLACEMENT_CONFIGS` WHERE USER_ID= "balaji"';
 
-  connection.query($query, function(err, rows, fields) {
-  if(err){
-      console.log("An error ocurred performing the query.");
-      console.log(err);
-      return;
-  }
- 
-  console.log("fetchExceptionalAccess:", rows);   
+connection.query($query, function(err, rows, fields) {
+if(err){
+    console.log("An error ocurred performing the query.");
+    console.log(err);
+    return;
+}
+
+console.log("fetchExceptionalAccess:", rows);   
 });
 
 // Close the connection
 connection.end(function(){
-  // The connection has been closed
-  console.log("connection has been closed");
+// The connection has been closed
+console.log("connection has been closed");
 });
 
 }
 function fetchSelectedSoftware() {
 
 var mysql = require('mySql');			
-    var connection = mysql.createConnection({
-      host: "remotemysql.com",
-      user: "p7Uck7iBo0",
-      database: "p7Uck7iBo0",
-      password: "WbjMAoBPE2"
-    });
-    connection.connect((err)=>{
-      if(err){
-        return console.log("err.stack")
-      }
-      console.log("connected successfuly");
-    });
-    // Queries
-    $query = 'SELECT * FROM `REPLACEMENT_SOFTWARE` WHERE user_id = "balaji"';
+  var connection = mysql.createConnection({
+    host: "remotemysql.com",
+    user: "p7Uck7iBo0",
+    database: "p7Uck7iBo0",
+    password: "WbjMAoBPE2"
+  });
+  connection.connect((err)=>{
+    if(err){
+      return console.log("err.stack")
+    }
+    console.log("connected successfuly");
+  });
+  // Queries
+  $query = 'SELECT * FROM `REPLACEMENT_SOFTWARE` WHERE user_id = "balaji"';
 
-  connection.query($query, function(err, rows, fields) {
-  if(err){
-      console.log("An error ocurred performing the query.");
-      console.log(err);
-      return;
-  }
-  console.log("selected software"+rows[0])
-  for (var i=0;i< rows.length;i++){
-    softwarestoinstall.push(rows[i].SOFTWARE_NAME);
-    selectedsoftwares.push(rows[i].SOFTWARE_NAME);
-  }
- 
-  console.log("fetchSelectedSoftware:", softwarestoinstall);   
+connection.query($query, function(err, rows, fields) {
+if(err){
+    console.log("An error ocurred performing the query.");
+    console.log(err);
+    return;
+}
+console.log("selected software"+rows[0])
+for (var i=0;i< rows.length;i++){
+  softwarestoinstall.push(rows[i].SOFTWARE_NAME);
+  selectedsoftwares.push(rows[i].SOFTWARE_NAME);
+}
+
+console.log("fetchSelectedSoftware:", softwarestoinstall);   
 });
 
 // Close the connection
 connection.end(function(){
-  // The connection has been closed
-  console.log("connection has been closed");
+// The connection has been closed
+console.log("connection has been closed");
 });
 
 }
 function updateAhdRequest() {
 
 var mysql = require('mySql');			
-    var connection = mysql.createConnection({
-      host: "remotemysql.com",
-      user: "p7Uck7iBo0",
-      database: "p7Uck7iBo0",
-      password: "WbjMAoBPE2"
-    });
-    connection.connect((err)=>{
-      if(err){
-        return console.log("err.stack")
-      }
-      console.log("connected successfuly");
-    });
-    // Queries
-    $query = 'update `AHD` set STATUS = "In Progress" WHERE REQ_ID = 123457 and REQ_TYPE="Laptop Replacement"';
+  var connection = mysql.createConnection({
+    host: "remotemysql.com",
+    user: "p7Uck7iBo0",
+    database: "p7Uck7iBo0",
+    password: "WbjMAoBPE2"
+  });
+  connection.connect((err)=>{
+    if(err){
+      return console.log("err.stack")
+    }
+    console.log("connected successfuly");
+  });
+  // Queries
+  $query = 'update `AHD` set STATUS = "In Progress" WHERE REQ_ID = 123457 and REQ_TYPE="Laptop Replacement"';
 
-  connection.query($query, function(err, rows, fields) {
-  if(err){
-      console.log("An error ocurred performing the query.");
-      console.log(err);
-      return;
-  }
- 
-  console.log("updateAhdRequest:", rows);   
+connection.query($query, function(err, rows, fields) {
+if(err){
+    console.log("An error ocurred performing the query.");
+    console.log(err);
+    return;
+}
+
+console.log("updateAhdRequest:", rows);   
 });
 
 // Close the connection
 connection.end(function(){
-  // The connection has been closed
-  console.log("connection has been closed");
+// The connection has been closed
+console.log("connection has been closed");
 });
 
 }
-        </script>
+      </script>
+</head>
+  <body>
+     
   <template class="section-template">
       <section id="welcome" class="wrapper style1 fullscreen intro">     
           <div class="inner" style="margin-left:20px;padding-top:30px">
@@ -863,15 +760,7 @@ connection.end(function(){
                    </ul>
                 </summary>
                 <div class="content">
-                  <script>
-                     if(laptopStatus === 'Open'){
-                       document.getElementById('restorup').innerHTML="Backup Successful!!";
-                     }
-                     else{
-                      document.getElementById('restorup').innerHTML="Restore Successful!!";
-                     }
-                  </script>
-                    <p id="restorup"> </p>
+                    <p id="restorup"> Data Transfer Successful !!</p>
                 </div>
             </details>
             <details>
