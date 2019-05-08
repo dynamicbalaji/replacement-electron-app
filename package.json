@@ -28,6 +28,7 @@
     "fs": "0.0.1-security",
     "http": "0.0.0",
     "is-admin": "^2.1.1",
+    "material-design-icons": "^3.0.1",
     "mysql": "^2.16.0",
     "node-run-cmd": "^1.0.1",
     "path": "^0.12.7",
